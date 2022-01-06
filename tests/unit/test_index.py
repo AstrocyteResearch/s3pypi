@@ -3,12 +3,7 @@ import pytest
 from s3pypi.index import Hash, Index
 
 
-@pytest.fixture(
-    scope="function",
-    params=[
-        (
-            "s3pypi",
-            [
+@pytest.fixture(scope="function", params=[("s3pypi", [
                 f"s3pypi-{version}{suffix}"
                 for version in (
                     "0",
@@ -26,11 +21,7 @@ from s3pypi.index import Hash, Index
                     ".tar.gz",
                     "-py2-none-any.whl",
                 )
-            ],
-            [Hash("sha256", "1234" * 16) if i % 3 == 0 else None for i in range(0, 20)],
-        )
-    ],
-)
+            ], [Hash("sha256", "1234" * 16) if i % 3 == 0 else None for i in range(20)])])
 def index_html(request, data_dir):
     index_name, names, hashes = request.param
     filenames = dict(zip(names, hashes))
